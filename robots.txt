@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://joel-studer.github.io/rechnungs-extraktor/sitemap.xml

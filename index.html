@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rechnungs-Ordner in eine Excel-Tabelle — ohne Cloud, ohne Abo</title>
+<meta name="description" content="50 PDF-Rechnungen auf einmal auswerten: Rechnungsnummer, Datum, Netto, USt, Brutto, IBAN in einer Tabelle. Läuft im Browser, nichts wird hochgeladen.">
+<style>
+  :root { --bd:#dde1e6; --mut:#5b6470; --acl:#1c6fd6; --bg:#ffffff; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:#12161b; background:var(--bg); line-height:1.55; }
+  .wrap { max-width:820px; margin:0 auto; padding:34px 20px 60px; }
+  h1 { font-size:30px; line-height:1.2; margin:0 0 12px; letter-spacing:-.3px; }
+  h2 { font-size:20px; margin:34px 0 10px; }
+  h3 { font-size:15.5px; margin:22px 0 6px; }
+  p, li { font-size:15px; }
+  .lead { font-size:17px; color:#333b45; }
+  .cta { display:inline-block; background:var(--acl); color:#fff; text-decoration:none; padding:12px 20px; border-radius:9px; font-weight:600; font-size:15px; }
+  .cta.sec { background:#fff; color:var(--acl); border:1px solid var(--acl); }
+  .row { display:flex; gap:10px; flex-wrap:wrap; margin:22px 0; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:18px 0; }
+  .card { border:1px solid var(--bd); border-radius:10px; padding:14px; }
+  .card b { display:block; margin-bottom:4px; font-size:14.5px; }
+  .card span { font-size:13.5px; color:var(--mut); }
+  .price { border:2px solid var(--acl); border-radius:12px; padding:18px; margin:22px 0; }
+  .price h3 { margin:0 0 4px; font-size:17px; }
+  .price .amount { font-size:27px; font-weight:700; }
+  .price ul { margin:10px 0 0 18px; padding:0; }
+  .price li { font-size:14.5px; }
+  .note { background:#f5f7f9; border-left:3px solid var(--acl); padding:11px 14px; font-size:14px; margin:18px 0; }
+  table { border-collapse:collapse; width:100%; font-size:14px; margin:12px 0; }
+  th, td { border-bottom:1px solid var(--bd); padding:7px 9px; text-align:left; }
+  th { font-size:12.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--mut); }
+  footer { font-size:13px; color:var(--mut); border-top:1px solid var(--bd); margin-top:40px; padding-top:14px; }
+  code { background:#f2f4f6; padding:1px 5px; border-radius:4px; font-size:13.5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>50 Rechnungs-PDFs rein. Eine Excel-Tabelle raus.</h1>
+  <p class="lead">Der Rechnungs-Extraktor liest Rechnungsnummer, Datum, Lieferant, Netto, USt, Brutto, IBAN und Fälligkeit
+  aus deinen PDF-Rechnungen — und schreibt alles in eine Tabelle, die Excel direkt öffnet.
+  <b>Alles läuft in deinem Browser.</b> Keine Datei verlässt deinen Rechner, kein Konto, kein Abo, keine Cloud.</p>
+
+  <div class="row">
+    <a class="cta" href="tool/">Kostenlos ausprobieren</a>
+    <a class="cta sec" href="#paket">Paket für Buchhaltung ansehen</a>
+  </div>
+
+  <div class="grid">
+    <div class="card"><b>Für Steuerberater-Kanzleien</b><span>Monatliche Belegsammlung auswerten, ohne jede Rechnung einzeln zu öffnen.</span></div>
+    <div class="card"><b>Für Handwerks- und Technikbetriebe</b><span>Lieferantenrechnungen nach Betrag, Datum und Fälligkeit sortieren — vor der Zahlungsfreigabe.</span></div>
+    <div class="card"><b>Für Selbstständige</b><span>Quartals-Übersicht in Minuten statt Stunden, inklusive Brutto-Summe.</span></div>
+  </div>
+
+  <h2>Warum es das offline macht</h2>
+  <p>Rechnungen sind Geschäftsdaten. Die meisten Online-Tools laden sie auf fremde Server. Der Extractor braucht das nicht:
+  PDF-Text wird lokal gelesen und lokal in Regeln umgesetzt. Kein Upload, keine Weitergabe, kein Auftragsverarbeitungsvertrag nötig.
+  Das ist genau das Argument, das in österreichischen und deutschen Betrieben die Entscheidung trifft.</p>
+
+  <h2>Was erkannt wird</h2>
+  <table>
+    <tr><th>Feld</th><th>Erkennungslogik</th></tr>
+    <tr><td>Lieferant</td><td>Briefkopf-Heuristik (Firmenrechtsform, Position)</td></tr>
+    <tr><td>Rechnungsnummer</td><td><code>Rechnung Nr.</code>, <code>Re.-Nr.</code>, <code>Belegnummer</code>, <code>Invoice No</code></td></tr>
+    <tr><td>Datum / Fälligkeit</td><td>Datumsformate <code>TT.MM.JJJJ</code> und <code>JJJJ-MM-TT</code>, Zahlungsziel-Keywords</td></tr>
+    <tr><td>Netto / USt / Brutto</td><td>Schlüsselwörter + Plausibilitätsrechnung (fehlender Wert wird aus dem anderen errechnet)</td></tr>
+    <tr><td>USt-Satz</td><td><code>USt 20%</code>, <code>20 % MwSt.</code> — Prozentsatz wird nicht mit Betrag verwechselt</td></tr>
+    <tr><td>IBAN</td><td>IBAN-Muster AT/DE/CH</td></tr>
+    <tr><td>Positionen</td><td>Artikelzeilen mit Menge, Einzelpreis, Gesamtpreis (Maßangaben wie <code>5x2,5</code> werden nicht als Zahl gelesen)</td></tr>
+  </table>
+
+  <div class="note"><b>Getestet:</b> 22 automatisierte Prüfungen über drei realistische Rechnungsformate (Elektrotechnik, Handwerk-Handel,
+  Büroservice), inklusive der typischen Fehlerfälle „USt 20 %"-Zeile und Datums-/Betragsformate.
+  Die Regeln liegen offen im Quelltext und lassen sich an deine Formate anpassen.</div>
+
+  <h2 id="paket">Für Betriebe, die es dauerhaft nutzen</h2>
+  <div class="price">
+    <h3>Vorlagen-Paket Buchhaltung</h3>
+    <div class="amount">29 € <span style="font-size:14px;font-weight:400;color:var(--mut)">einmalig</span></div>
+    <ul>
+      <li>Erweiterte Erkennungsregeln für weitere Rechnungsformate (Anpassungs-Anleitung + Beispiele)</li>
+      <li>Excel-Vorlage „Rechnungsjournal": Import-Sheet, Monats- und Quartalssummen, USt-Aufteilung</li>
+      <li>Power-Query-Vorlage zum automatischen Nachladen des CSV-Exports</li>
+      <li>Checkliste „Monatsabschluss in 15 Minuten"</li>
+      <li>Kostenlose Updates</li>
+    </ul>
+  </div>
+  <p class="note">Wenn du das Paket kaufst und dein Rechnungsformat nicht erkannt wird: Format-Beispiel (geschwärzt) einsenden,
+  angepasste Regel kommt per Update zurück. Kein Abo, keine Bindung.</p>
+  <p><a class="cta" href="https://github.com/joel-studer/rechnungs-extraktor/issues/new?title=Interesse%20am%20Vorlagen-Paket%20Buchhaltung&body=Branche%2FBetrieb%3A%0AAnzahl%20Rechnungen%20pro%20Monat%3A%0AWelches%20Feld%20wird%20bei%20Ihnen%20nicht%20erkannt%3F" rel="noopener">Paket anfragen</a></p>
+  <p class="note" style="border-left-color:#999;background:#fafafa">Hinweis: Bestellung und Bezahlung laufen ab Marktstart über einen Zahlungsanbieter
+  (Karte, kein Abo). Bis dahin wird jede Anfrage persönlich beantwortet und die Lieferung manuell ausgelöst. Der Preis bleibt gleich.</p>
+
+  <h2>Ratgeber zur Rechnungs-Automatisierung</h2>
+  <p>Hintergrundwissen, Arbeitsabläufe und Grenzen — veröffentlicht von der Betreiber-Automatik dieser Seite:
+  <a href="content/">alle Artikel</a>. Neueste:
+  <a href="content/2026-09-21-pdf-rechnungen-in-excel-umwandeln-ohne-upload.html">PDF-Rechnungen in Excel umwandeln ohne Upload</a>.</p>
+
+  <h2>Häufige Fragen</h2>
+  <h3>Werden meine Rechnungen hochgeladen?</h3>
+  <p>Nein. Der gesamte Vorgang läuft im Browser auf deinem Gerät. Es gibt keinen Server, der die Daten sieht.</p>
+  <h3>Funktioniert es mit gescannten Rechnungen?</h3>
+  <p>Nur wenn die PDFs eine Textebene enthalten. Reine Scans brauchen Texterkennung (OCR) — dafür ist Version 1 bewusst nicht gebaut, um die Fehlerquote nicht zu erhöhen.</p>
+  <h3>Ersetzt es die Buchhaltung?</h3>
+  <p>Nein. Es ersetzt das Abtippen und Zusammensuchen. Prüfe die Zahlen vor der Buchhaltung — die Verantwortung für steuerrelevante Daten bleibt beim Menschen.</p>
+
+  <footer>
+    Rechnungs-Extraktor · offline im Browser · Regeln als Open-Source-Kern (`extract.mjs`) ·
+    Kein Upload · Keine Anmeldung · Kein Abo
+  </footer>
+</div>
+</body>
+</html>

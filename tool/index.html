@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rechnungs-Extraktor — PDF zu Excel, direkt im Browser</title>
+<meta name="description" content="Mehrere PDF-Rechnungen in eine Excel-Tabelle umwandeln. Läuft komplett im Browser, kein Upload, keine Anmeldung, keine Cloud.">
+<style>
+  :root { --bd:#d8dbe0; --mut:#5b6470; --acl:#1c6fd6; --bg:#f6f7f9; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color:#14181d; background:var(--bg); }
+  header { background:#fff; border-bottom:1px solid var(--bd); padding:14px 18px; }
+  header h1 { margin:0; font-size:18px; }
+  header p { margin:3px 0 0; font-size:12.5px; color:var(--mut); }
+  main { max-width:1100px; margin:0 auto; padding:18px; }
+  .drop { border:2px dashed #b9c0c9; border-radius:12px; background:#fff; padding:26px 18px; text-align:center; cursor:pointer; transition:.15s; }
+  .drop.hover { border-color:var(--acl); background:#f0f6ff; }
+  .drop b { display:block; font-size:15px; margin-bottom:4px; }
+  .drop span { font-size:12.5px; color:var(--mut); }
+  .modes { display:flex; gap:16px; flex-wrap:wrap; margin:14px 0 6px; font-size:13px; }
+  .modes label { display:flex; gap:6px; align-items:center; cursor:pointer; background:#fff; border:1px solid var(--bd); border-radius:8px; padding:7px 10px; }
+  .bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:12px 0; }
+  button { font:inherit; font-size:13px; padding:8px 13px; border-radius:8px; border:1px solid var(--bd); background:#fff; cursor:pointer; }
+  button.primary { background:var(--acl); border-color:var(--acl); color:#fff; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  #status { font-size:12.5px; color:var(--mut); }
+  .wrap { overflow:auto; background:#fff; border:1px solid var(--bd); border-radius:10px; margin-top:10px; }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; }
+  th, td { border-bottom:1px solid #eceef1; padding:6px 8px; text-align:left; white-space:nowrap; }
+  th { background:#fafbfc; position:sticky; top:0; font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.4px; color:var(--mut); }
+  tr.sum td { background:#f0f6ff; font-weight:600; }
+  .hint { font-size:12px; color:var(--mut); margin-top:10px; line-height:1.5; }
+  .pill { display:inline-block; font-size:11px; background:#e8f2e9; color:#22662f; border:1px solid #bfdcc4; border-radius:20px; padding:2px 9px; }
+  .warn { background:#fff8e6; border:1px solid #f0dfae; border-radius:8px; padding:9px 11px; font-size:12.5px; margin-top:12px; }
+  footer { max-width:1100px; margin:0 auto; padding:6px 18px 30px; font-size:12px; color:var(--mut); }
+  footer a, .hint a { color:var(--acl); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Rechnungs-Extraktor <span class="pill">läuft zu 100 % offline im Browser</span></h1>
+  <p>PDF-Rechnungen ablegen → Excel-/CSV-Tabelle erhalten. Kein Upload, kein Server, kein Konto.</p>
+</header>
+<main>
+  <div class="drop" id="drop">
+    <b>PDF-Rechnungen hierher ziehen oder klicken</b>
+    <span>Mehrere Dateien möglich — ideal für die Sammel-Auswertung eines ganzen Ordners</span>
+  </div>
+  <input type="file" id="file" accept="application/pdf" multiple hidden>
+
+  <div class="modes">
+    <label><input type="radio" name="mode" value="summary" checked> Sammel-Tabelle (1 Zeile pro Rechnung — für die Buchhaltung)</label>
+    <label><input type="radio" name="mode" value="items"> Positionen (Artikelzeilen einer PDF)</label>
+  </div>
+
+  <div class="bar">
+    <button class="primary" id="run" disabled>Auswerten</button>
+    <button id="csv" disabled>CSV für Excel</button>
+    <button id="json" disabled>JSON</button>
+    <button id="copy" disabled>In Zwischenablage</button>
+    <button id="clear">Zurücksetzen</button>
+    <span id="status">Bereit.</span>
+  </div>
+
+  <div class="wrap"><table id="out"><thead></thead><tbody></tbody></table></div>
+
+  <div class="warn">
+    <b>Hinweis zur Genauigkeit:</b> Die Erkennung arbeitet mit Textlayout und Regeln, nicht mit KI-Cloud-Diensten.
+    Prüfe die Zahlen vor der Buchhaltung — Pflicht bei steuerrelevanten Daten. Alles bleibt auf deinem Rechner.
+  </div>
+
+  <div class="hint">
+    Erkannt werden: Lieferant, Rechnungsnummer, Datum, Netto/USt/Brutto, USt-Satz, IBAN, Kundennummer, Fälligkeit.
+    Fehlt bei deinen Rechnungen ein Muster, kann die Erkennung angepasst werden — dafür gibt es das
+    Vorlagen-Paket mit erweiterten Regeln und Power-Query-Vorlagen: <a href="../#paket">Paket ansehen</a>.
+  </div>
+</main>
+<footer>Keine Daten verlassen dieses Gerät. Der Export lässt sich direkt in Excel öffnen.</footer>
+
+<script type="module">
+import * as pdfjsLib from './vendor/pdf.min.mjs';
+import { bucketItems, extractSummary, extractItems, toCSV, SUMMARY_HEADERS, ITEM_HEADERS } from './extract.mjs';
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdf.worker.min.mjs';
+
+const $ = (id) => document.getElementById(id);
+const drop = $('drop'), fileInput = $('file');
+let files = [], rows = [], headers = [], mode = 'summary';
+
+drop.addEventListener('click', () => fileInput.click());
+drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('hover'); });
+drop.addEventListener('dragleave', () => drop.classList.remove('hover'));
+drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('hover'); add([...e.dataTransfer.files]); });
+fileInput.addEventListener('change', () => add([...fileInput.files]));
+document.querySelectorAll('input[name=mode]').forEach(r => r.addEventListener('change', () => { mode = r.value; $('run').disabled = !files.length; }));
+$('clear').addEventListener('click', () => { files = []; render([], []); fileInput.value = ''; $('run').disabled = true; $('status').textContent = 'Bereit.'; });
+
+function add(list) {
+  files = files.concat(list.filter(f => /\.pdf$/i.test(f.name) || f.type === 'application/pdf'));
+  $('run').disabled = !files.length;
+  $('status').textContent = files.length + ' PDF(s) geladen.';
+}
+
+async function linesOf(file) {
+  const doc = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+  const lines = [];
+  for (let p = 1; p <= doc.numPages; p++) {
+    const page = await doc.getPage(p);
+    lines.push(...bucketItems((await page.getTextContent()).items));
+  }
+  return lines;
+}
+
+function render(h, data) {
+  headers = h; rows = data;
+  $('out').querySelector('thead').innerHTML = h.length ? '<tr>' + h.map(x => `<th>${x}</th>`).join('') + '</tr>' : '';
+  $('out').querySelector('tbody').innerHTML = data.map(r =>
+    '<tr' + (r.__sum ? ' class="sum"' : '') + '>' + h.map(x => `<td>${r[x] === '' || r[x] == null ? '' : String(r[x])}</td>`).join('') + '</tr>').join('');
+  const any = !!data.length;
+  $('csv').disabled = $('json').disabled = $('copy').disabled = !any;
+  if (any && mode === 'summary') {
+    const s = k => data.reduce((a, r) => a + (typeof r[k] === 'number' ? r[k] : 0), 0).toFixed(2).replace('.', ',');
+    $('status').textContent = `${data.filter(r => !r.__sum).length} Rechnung(en) — Netto ${s('Netto (€)')} €, Brutto ${s('Brutto (€)')} €`;
+  } else {
+    $('status').textContent = data.length ? data.length + ' Zeile(n) erkannt.' : 'Keine Zeilen erkannt.';
+  }
+}
+
+$('run').addEventListener('click', async () => {
+  $('run').disabled = true;
+  try {
+    if (mode === 'items') {
+      $('status').textContent = 'Analysiere ' + files[0].name + ' …';
+      render(ITEM_HEADERS, extractItems(await linesOf(files[0])));
+    } else {
+      const parsed = [];
+      for (let i = 0; i < files.length; i++) {
+        $('status').textContent = `Analysiere ${i + 1}/${files.length}: ${files[i].name}`;
+        parsed.push({ name: files[i].name, lines: await linesOf(files[i]) });
+      }
+      const data = parsed.map(f => extractSummary(f.name, f.lines));
+      if (data.length > 1) {
+        const sum = k => +data.reduce((a, r) => a + (typeof r[k] === 'number' ? r[k] : 0), 0).toFixed(2);
+        data.push({
+          Datei: `Summe (${data.length} Rechnungen)`, Lieferant: '', Rechnungsnummer: '', Datum: '',
+          'Netto (€)': sum('Netto (€)'), 'USt (€)': sum('USt (€)'), 'Brutto (€)': sum('Brutto (€)'),
+          'USt-Satz (%)': '', IBAN: '', KdNr: '', Fällig: '', __sum: true
+        });
+      }
+      render(SUMMARY_HEADERS, data);
+    }
+  } catch (e) { $('status').textContent = 'Fehler: ' + e.message; }
+  $('run').disabled = false;
+});
+
+function download(name, text, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], { type }));
+  a.download = name; a.click(); URL.revokeObjectURL(a.href);
+}
+$('csv').addEventListener('click', () => download(mode === 'items' ? 'positionen.csv' : 'rechnungen.csv', toCSV(headers, rows), 'text/csv;charset=utf-8'));
+$('json').addEventListener('click', () => download('rechnungen.json', JSON.stringify(rows.map(({ __sum, ...r }) => r), null, 2), 'application/json'));
+$('copy').addEventListener('click', async () => {
+  await navigator.clipboard.writeText(toCSV(headers, rows).replace(/^\uFEFF/, ''));
+  $('status').textContent = 'In die Zwischenablage kopiert — direkt in Excel einfügbar.';
+});
+</script>
+</body>
+</html>
