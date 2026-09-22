@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rechnungsnummer aus PDF auslesen und doppelte Rechnungen erkennen</title>
+  <meta name="description" content="Rechnungsnummern aus Text-PDFs auslesen, einheitlich normalisieren und mit Lieferantenmerkmalen abgleichen: praktischer Ablauf für Buchhaltung, Kanzleien sowie Handwerk und Technik.">
+  <style>
+    :root { --text:#17202a; --muted:#5c6670; --line:#dfe4e8; --panel:#f5f7f9; --accent:#185abc; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--text); background:#fff; font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { max-width:820px; margin:0 auto; padding:38px 20px 60px; }
+    h1 { margin:0 0 14px; font-size:clamp(28px,5vw,40px); line-height:1.15; letter-spacing:-.4px; }
+    h2 { margin:34px 0 10px; font-size:23px; line-height:1.25; }
+    p, li { max-width:75ch; }
+    .lead { color:#34404b; font-size:18px; }
+    .note { margin:18px 0; padding:14px 16px; border-left:4px solid var(--accent); background:var(--panel); }
+    a { color:var(--accent); }
+    footer { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <article>
+      <h1>Rechnungsnummer aus PDF auslesen und doppelte Rechnungen erkennen</h1>
+      <p class="lead">Eine Rechnungsnummer ist ein guter Prüfhinweis, aber allein noch kein sicherer Beleg für eine eindeutige Rechnung. Wer PDFs für die Buchhaltung ausliest, sollte die Nummer zuerst sauber finden, dann in eine vergleichbare Form bringen und anschließend mit der Identität des Lieferanten abgleichen. Dieser Leitfaden beschreibt einen praktischen Ablauf für Buchhaltungen, Steuerberater-Kanzleien sowie Handwerks- und Technikbetriebe in Deutschland und Österreich.</p>
+
+      <h2>Warum die Rechnungsnummer nicht isoliert betrachtet werden sollte</h2>
+      <p>Lieferanten vergeben Rechnungsnummern nach eigenen Regeln. Zwei verschiedene Unternehmen können daher dieselbe Nummer verwenden. Umgekehrt kann ein Lieferant dieselbe Nummer in unterschiedlichen Dokumenttypen oder Systemen unerwartet wiederholen. Für eine belastbare Dublettenprüfung gehören deshalb mindestens Lieferant und Rechnungsnummer zusammen. Rechnungsdatum, Bruttobetrag und Ursprungsdatei sind zusätzliche Vergleichsmerkmale und helfen bei der manuellen Klärung.</p>
+      <p>Das Ziel ist zunächst kein automatischer Buchungsvorschlag. Es geht um eine Prüfliste: Welche Datei enthält welche Nummer, welcher Lieferant ist erkennbar und welche Kombination kommt mehrfach vor? Ein Treffer markiert einen Klärungsfall. Er beweist weder eine doppelte Zahlung noch einen Fehler in der Buchhaltung.</p>
+
+      <h2>Praktischer Ablauf in sechs Schritten</h2>
+      <ol>
+        <li><strong>Belege sauber abgrenzen:</strong> Einen Ordner oder Zeitraum festlegen und nur Rechnungen desselben Typs verarbeiten. Gutschriften, Stornos, Angebote und Lieferscheine sollten nicht ungefiltert in dieselbe Dublettenliste gelangen.</li>
+        <li><strong>Text aus dem PDF lesen:</strong> Bei einem PDF mit echter Textebene werden Zeichen direkt ausgelesen. Zuerst nach Bezeichnungen wie „Rechnungsnummer“, „Rechnung Nr.“, „Invoice No.“ oder ähnlichen Varianten suchen. Die gefundene Textstelle sollte zusammen mit Dateiname und Seitenzahl gespeichert werden.</li>
+        <li><strong>Kandidaten bewerten:</strong> Nicht jede lange Zahl ist eine Rechnungsnummer. Bestellnummer, Kundennummer, Vertragsnummer und Lieferscheinnummer können in derselben Kopfzeile stehen. Eine Regel sollte daher die Nähe zur passenden Bezeichnung, typische Präfixe und die Position im Layout berücksichtigen, ohne unbekannte Werte stillschweigend zu erfinden.</li>
+        <li><strong>Nummern normalisieren:</strong> Für den Vergleich eine zusätzliche Prüfspalte bilden, während der Originalwert erhalten bleibt. Einheitlich können führende und nachgestellte Leerzeichen entfernt, Groß- und Kleinschreibung vereinheitlicht sowie klar dokumentierte Trennzeichen wie Leerzeichen oder Bindestriche behandelt werden. Die Regeln dürfen nicht so aggressiv sein, dass unterschiedliche Nummern zu einem Wert verschmelzen.</li>
+        <li><strong>Lieferant zuordnen:</strong> Den erkannten Namen mit vorhandenen Stammdaten oder einer geprüften Schreibweise verbinden. Wenn nur eine Kurzform, ein Markenname oder eine abweichende Firmenbezeichnung erscheint, sollte die Zuordnung einen Prüfstatus erhalten. Eine IBAN oder Anschrift kann als zusätzliches Merkmal dienen, ersetzt aber nicht die Kontrolle am Original.</li>
+        <li><strong>Gruppieren und klären:</strong> Nach Lieferant und normalisierter Rechnungsnummer gruppieren. Gruppen mit mehr als einem Dokument öffnen und Rechnungsdatum, Betrag, Seitenzahl, Inhalt und Dateinamen vergleichen. Erst danach entscheiden, ob es sich um eine Kopie, eine korrigierte Rechnung, eine Teilrechnung, eine Gutschrift oder tatsächlich um einen ungeklärten Doppelbeleg handelt.</li>
+      </ol>
+
+      <h2>Eine sinnvolle Prüftabelle</h2>
+      <p>Für jede PDF genügt zunächst eine Zeile mit Dateiname oder Beleg-ID, erkannter Lieferantenbezeichnung, Original-Rechnungsnummer, normalisierter Vergleichsnummer, Rechnungsdatum, Bruttobetrag, Seite der Fundstelle und Prüfstatus. Eine Spalte für die Erkennungsmethode unterscheidet direkte Texterfassung von OCR. Zusätzlich kann ein Feld festhalten, ob die Nummer am Original sichtbar bestätigt wurde. So bleibt nachvollziehbar, welcher Wert aus dem Dokument stammt und welcher nur für die Suche umgeformt wurde.</p>
+      <p>Bei einem Treffer sollte die Tabelle nicht automatisch eine Datei löschen oder einen Beleg aussortieren. Ein Status wie „Kopie vermutet“, „abweichender Belegtyp“, „manuell bestätigt“ oder „offen“ ist hilfreicher. Wer die Prüfung durchgeführt hat und wann sie erfolgte, kann je nach internem Prozess ebenfalls dokumentiert werden.</p>
+
+      <h2>Normalisierung mit Augenmaß</h2>
+      <p>Typische Varianten sind „RE-2026-0417“, „RE 2026/0417“ und „re20260417“. Ob diese Schreibweisen denselben Wert darstellen, hängt vom Lieferanten und vom verwendeten Nummernsystem ab. Daher sollte eine Normalisierung nur Regeln anwenden, die für den eigenen Datenbestand nachvollziehbar sind. Ein sicherer Ansatz ist, den Originalwert zu bewahren und daneben eine Suchform zu erzeugen. Präfixe, Jahresangaben und führende Nullen sollten nicht pauschal entfernt werden, wenn sie Teil der Nummer sein können.</p>
+
+      <h2>Text-PDF, Scan und OCR: typische Grenzen</h2>
+      <p>Bei Text-PDFs kann die Lesereihenfolge durch Spalten, Kopfzeilen, Tabellen oder Seitenumbrüche trotzdem unpassend sein. Die Bezeichnung steht dann vielleicht weit entfernt vom zugehörigen Wert. Bei einem Scan gibt es zunächst keine Zeichen, sondern nur ein Bild. OCR kann die Nummer sichtbar machen, verwechselt aber unter anderem „0“ und „O“, „1“ und „I“ oder Punkte und Bindestriche. Eine schlecht ausgerichtete, unscharfe oder handschriftlich ergänzte Rechnung erhöht das Risiko zusätzlich.</p>
+      <p>Für OCR-Ergebnisse sollte die Prüftabelle deshalb einen Hinweis enthalten. Besonders kritisch sind Nummern mit ähnlichen Zeichen, sehr kleinen Schriften und mehreren Dokumenten auf einer Seite. Wenn keine eindeutige Nummer erkannt wird, ist ein leerer oder unsicherer Wert mit Prüfstatus besser als eine scheinbar präzise Ergänzung.</p>
+
+      <h2>Layoutvarianten und Sonderfälle</h2>
+      <p>Lieferanten können die Nummer im Briefkopf, in einer Seitenfußzeile, in einem QR-Beleg oder nur auf der ersten Seite platzieren. Manche PDFs enthalten mehrere Rechnungen oder Anhänge. Bei Sammelrechnungen müssen die Dokumentgrenzen vor dem Gruppieren geklärt werden. Korrigierte Rechnungen können dieselbe Nummer mit einem neuen Datum oder einem Vermerk tragen; Teil- und Abschlagsrechnungen können bewusst eigene Nummern haben. Solche Fälle brauchen eine fachkundige Zuordnung statt einer pauschalen Dublettenregel.</p>
+
+      <h2>Kontrolle vor der Weitergabe</h2>
+      <p>Zum Abschluss sollten die Anzahl der verarbeiteten PDFs und die Anzahl der Ergebniszeilen verglichen werden. Danach werden alle leeren Nummern, unsicheren Lieferantenzuordnungen und Treffergruppen geöffnet. Ein Abgleich von Datum und Betrag hilft bei der Einordnung, ist aber kein alleiniger Beweis. Die Original-PDFs bleiben unverändert erhalten; die normalisierten Werte und Entscheidungen gehören in eine nachvollziehbare Arbeitskopie. Die technische Extraktion unterstützt die Prüfung, ersetzt aber keine interne Freigabe und keine rechtliche oder steuerliche Beurteilung.</p>
+
+      <p><a href="../tool/">Rechnungsnummern lokal aus PDFs auslesen und Dubletten-Prüfung vorbereiten</a></p>
+    </article>
+    <footer>Technische Information, keine Rechts- oder Steuerberatung. Die passende Prüftiefe richtet sich nach dem eigenen Belegprozess.</footer>
+  </main>
+</body>
+</html>
