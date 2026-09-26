@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Netto, Brutto und Umsatzsteuer aus PDF-Rechnung prüfen</title>
+  <meta name="description" content="Netto, Brutto und Umsatzsteuer aus PDF-Rechnungen auslesen, rechnerisch abgleichen und für Buchhaltung, Kanzlei sowie Handwerk nachvollziehbar freigeben.">
+  <style>
+    :root { --text:#17202a; --muted:#5c6670; --line:#dfe4e8; --panel:#f5f7f9; --accent:#185abc; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--text); background:#fff; font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif; }
+    main { max-width:820px; margin:0 auto; padding:38px 20px 60px; }
+    h1 { margin:0 0 14px; font-size:clamp(28px,5vw,40px); line-height:1.15; letter-spacing:-.4px; }
+    h2 { margin:34px 0 10px; font-size:23px; line-height:1.25; }
+    p, li { max-width:75ch; }
+    .lead { color:#34404b; font-size:18px; }
+    .note { margin:18px 0; padding:14px 16px; border-left:4px solid var(--accent); background:var(--panel); }
+    a { color:var(--accent); }
+    footer { margin-top:40px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <article>
+      <header>
+        <h1>Netto, Brutto und Umsatzsteuer aus PDF-Rechnung auslesen und rechnerisch prüfen</h1>
+        <p class="lead">Bei Eingangs- und Ausgangsrechnungen müssen Nettobetrag, Umsatzsteuer und Bruttobetrag zusammenpassen. Für Buchhaltungen, Steuerberater-Kanzleien sowie Handwerks- und Technikbetriebe in Deutschland und Österreich ist dabei wichtig, drei Schritte nicht zu vermischen: Werte aus dem Dokument extrahieren, die Rechenbeziehung technisch prüfen und den Beleg fachlich freigeben. Dieser Ablauf unterstützt die interne Kontrolle, ersetzt aber keine Rechts- oder Steuerberatung.</p>
+      </header>
+
+      <h2>Warum ausgelesene Beträge noch kein Prüfergebnis sind</h2>
+      <p>Eine Rechnung kann mehrere Summen enthalten: Zwischensummen, Positionen, Rabatte, Versandkosten, Anzahlungen, verschiedene Steuersätze und eine Gesamtsumme. Ein PDF-Parser findet Zahlen und Bezeichnungen, entscheidet aber nicht zuverlässig, welche Zahl die relevante Netto-, Umsatzsteuer- oder Bruttosumme ist. Auch ein formal passender Betrag kann aus einer anderen Tabelle, einem Seitenfuß oder einer Gutschrift stammen.</p>
+      <p>Deshalb sollte ein Ergebnis zunächst als Extraktion mit Fundstelle behandelt werden. Erst danach wird geprüft, ob die Werte rechnerisch zueinander passen. Die fachliche Freigabe berücksichtigt zusätzlich Belegart, Leistungszeitraum, Lieferant oder Kunde, Kontierung und den vorgesehenen internen Prozess.</p>
+
+      <h2>Netto, Umsatzsteuer und Brutto getrennt erfassen</h2>
+      <p>Für jeden relevanten Betrag gehören Bezeichnung, Wert, Währung und Fundstelle zusammen. Ein Betrag von 1.000,00 kann eine Nettosumme, eine Position oder ein Abschlag sein. Die Bezeichnung „Gesamt“, „Summe netto“, „USt.“, „MwSt.“ oder „Rechnungsbetrag“ liefert einen Hinweis, ist aber allein kein ausreichender Beleg für die fachliche Bedeutung.</p>
+      <p>Bei mehreren Steuersätzen sollten Netto- und Steuerbeträge je Satz getrennt gespeichert werden. Ebenso müssen Nachlässe, Zuschläge und steuerfreie oder nicht steuerbare Positionen sichtbar bleiben, soweit sie auf dem Dokument ausgewiesen sind. Die ausgelesene Schreibweise sollte neben einer technisch vergleichbaren Zahl erhalten bleiben, damit Rundungen und Formatierungen am Original nachvollzogen werden können.</p>
+
+      <h2>Rechnerische Konsistenz prüfen</h2>
+      <p>Die grundlegende Beziehung lautet: Netto plus Umsatzsteuer ergibt Brutto. Bei einem einzelnen Steuersatz kann zusätzlich geprüft werden, ob die Umsatzsteuer aus dem Netto mit dem auf der Rechnung angegebenen Prozentsatz übereinstimmt. Bei mehreren Steuersätzen muss die Rechnung je Steuergruppe betrachtet werden. Für den Vergleich ist eine festgelegte Rundungsregel erforderlich, weil Positionswerte und Summen auf Rechnungen unterschiedlich gerundet sein können.</p>
+      <p>Eine kleine Differenz ist nicht automatisch ein Fehler. Sie kann aus der Rundung einzelner Positionen, einer getrennten Versandposition oder einer Korrekturzeile entstehen. Die Abweichung sollte jedoch als konkretes Prüfergebnis mit Betrag und angewandter Regel gespeichert werden. Das System darf eine Differenz nicht stillschweigend korrigieren und daraus keine steuerliche Bewertung ableiten.</p>
+
+      <h2>Kontrollierter Ablauf in drei Stufen</h2>
+      <ol>
+        <li><strong>Extraktion:</strong> PDF zuordnen, relevante Textstellen oder Tabellen erfassen und Netto, Umsatzsteuer, Steuersatz, Brutto, Währung sowie gegebenenfalls mehrere Steuergruppen getrennt übernehmen. Seite, Fundstelle und Erkennungsmethode werden gespeichert.</li>
+        <li><strong>Arithmetischer Abgleich:</strong> Ausgelesene Werte mit der festgelegten Rundung vergleichen. Netto plus Steuer, Steuer je Steuersatz und Brutto werden als passend, abweichend oder nicht prüfbar gekennzeichnet. Fehlende oder mehrdeutige Werte bleiben offen.</li>
+        <li><strong>Fachliche Freigabe:</strong> Eine zuständige Person prüft den Beleg am Original und beurteilt, ob die Rechnung zum Geschäftsvorgang und zum internen Buchungsprozess passt. Erst diese Freigabe entscheidet über Weiterverarbeitung, Rückfrage oder Ablehnung.</li>
+      </ol>
+
+      <h2>Felder für eine nachvollziehbare Prüftabelle</h2>
+      <p>Eine Arbeitsliste kann Beleg-ID oder Dateiname, Lieferant oder Kunde, Rechnungsnummer, Rechnungsdatum, Währung, Netto gesamt, Umsatzsteuer gesamt, Brutto gesamt, Steuersatz oder Steuergruppen, Fundstellen und Erkennungsmethode enthalten. Für die technische Prüfung sind außerdem berechnete Steuer, berechnetes Brutto, Rundungsregel, Differenzbetrag und Rechenstatus sinnvoll.</p>
+      <p>Für die fachliche Stufe kommen Prüfstatus, offene Frage, zuständige Person, Prüfdatum und Freigabeentscheidung hinzu. Originalwerte und berechnete Werte sollten in getrennten Spalten stehen. So bleibt sichtbar, was aus der Rechnung gelesen wurde und was die Prüflogik daraus abgeleitet hat. Ein Export sollte den Bezug zum unveränderten Originaldokument behalten.</p>
+
+      <h2>Text-PDFs: Tabellen und Lesereihenfolge beachten</h2>
+      <p>Eine PDF mit Textebene lässt sich häufig durchsuchen, doch die technische Reihenfolge entspricht nicht immer dem sichtbaren Layout. In Spalten können Beträge, Steuersätze und Bezeichnungen vertauscht oder getrennt ausgelesen werden. Tabellenzeilen sollten deshalb anhand ihrer Position und ihres Kontexts zusammengeführt werden. Bei mehreren Summen ist die Seite oder der Bereich der Fundstelle für die spätere Sichtprüfung wichtig.</p>
+      <p>Besonders bei Rechnungen mit mehreren Seiten darf eine Summenzeile nicht ohne Dokumentbezug übernommen werden. Wiederholte Kopf- und Fußzeilen, Zwischensummen und bereits korrigierte Werte müssen als solche erkennbar bleiben. Ein Parsergebnis mit niedriger Zuordnungssicherheit gehört in die manuelle Prüfung und nicht direkt in einen Buchungslauf.</p>
+
+      <h2>Scans und OCR ausdrücklich markieren</h2>
+      <p>Bei einem Scan ist der Betrag zunächst nur als Bild vorhanden. OCR kann Dezimaltrennzeichen, Minuszeichen, Prozentwerte oder Ziffern falsch erkennen. Eine Rechnung mit „1.234,56“ kann je nach Erkennung etwa als anders formatiertes oder unvollständiges Ergebnis vorliegen. Deshalb sollte das OCR-Ergebnis mit Erkennungsmethode und Unsicherheitsstatus gespeichert und am sichtbaren Beleg kontrolliert werden.</p>
+      <p>Wenn OCR und sichtbare Rechnung voneinander abweichen, ist die Differenz zuerst ein Klärungsfall. Die Rechenprüfung kann zeigen, dass die gelesenen Zahlen nicht zusammenpassen; sie kann aber nicht feststellen, welcher Wert fachlich richtig ist. Bei schlechter Scanqualität, handschriftlichen Änderungen oder nicht lesbaren Steuerangaben sollte die Freigabe bis zur manuellen Klärung offen bleiben.</p>
+
+      <h2>Warnsignale und fachliche Freigabe</h2>
+      <p>Warnsignale sind mehrere Bruttosummen, unterschiedliche Währungen, negative Korrekturzeilen, verschiedene Steuersätze ohne getrennte Berechnung, fehlende Steuerbeträge sowie eine Differenz zwischen ausgewiesenem und berechnetem Brutto. Auch ein rechnerisch konsistenter Beleg kann inhaltlich falsch zugeordnet sein. Die fachliche Freigabe sollte daher den Geschäftsvorgang, die Stammdaten und die internen Zuständigkeiten einbeziehen.</p>
+      <p class="note">Eine arithmetisch passende Rechnung ist nicht automatisch fachlich freigegeben. Die technische Prüfung macht Abweichungen sichtbar; die verantwortliche Buchhaltung oder Kanzlei entscheidet über den nächsten Prozessschritt.</p>
+
+      <h2>Ergebnis revisionsnah dokumentieren</h2>
+      <p>Zum Abschluss sollte je Beleg nachvollziehbar sein, welche Werte extrahiert, wie sie berechnet und wer sie fachlich geprüft hat. Offene Abweichungen dürfen nicht durch leere Felder oder Standardwerte verschwinden. Ein klarer Status wie „Extraktion vollständig“, „Rechenprüfung abweichend“ oder „fachliche Freigabe offen“ trennt technische Information von einer noch ausstehenden Entscheidung.</p>
+
+      <p><a href="../tool/">Netto, Umsatzsteuer und Brutto aus PDF-Rechnungen auslesen und prüfen</a></p>
+    </article>
+    <footer>Technische Information, keine Rechts- oder Steuerberatung. Maßgeblich sind der Originalbeleg, die internen Freigaben und die für den Betrieb geltenden Prozesse.</footer>
+  </main>
+</body>
+</html>
