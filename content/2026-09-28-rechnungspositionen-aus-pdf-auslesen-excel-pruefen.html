@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rechnungspositionen aus PDF auslesen und in Excel prüfen</title>
+<meta name="description" content="Rechnungspositionen aus PDF-Rechnungen strukturiert nach Excel übernehmen: Mengen, Einheiten, Preise, Rabatte, Summen und typische Fehler kontrollieren.">
+<style>
+body{margin:0;color:#17202a;font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:820px;margin:auto;padding:38px 20px 60px}h1{font-size:36px;line-height:1.15}h2{margin-top:32px;font-size:23px}p,li{max-width:75ch}.lead{color:#34404b;font-size:18px}table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #dfe4e8;text-align:left;vertical-align:top}footer{margin-top:40px;padding-top:18px;border-top:1px solid #dfe4e8;color:#5c6670;font-size:14px}a{color:#185abc}
+</style>
+</head>
+<body><main><article>
+<header><h1>Rechnungspositionen aus PDF auslesen und in Excel prüfen</h1>
+<p class="lead">Wer Rechnungspositionen aus PDF-Dateien nach Excel übernimmt, braucht mehr als eine kopierte Tabelle. Jede Zeile muss zum Originalbeleg zurückverfolgbar sein, Beträge müssen vergleichbar bleiben und unklare Erkennungen dürfen nicht unbemerkt in die weitere Bearbeitung gelangen.</p></header>
+<section><h2>Kopfdaten und Positionsdaten getrennt behandeln</h2>
+<p>Eine Rechnung enthält Kopfdaten wie Lieferant, Rechnungsnummer, Rechnungsdatum, Zahlungsziel und Gesamtsumme. Diese Angaben gelten für den gesamten Beleg. Positionsdaten beschreiben dagegen einzelne Waren, Leistungen, Arbeitsstunden oder Materialien. Dazu gehören typischerweise Positionsnummer, Beschreibung, Menge, Einheit, Einzelpreis und Positionsbetrag.</p>
+<p>Für eine saubere Excel-Struktur sollten beide Ebenen verbunden, aber nicht vermischt werden. Eine Tabelle kann jede Rechnungsposition in einer eigenen Zeile führen und in zusätzlichen Spalten den Dateinamen sowie die Rechnungsnummer wiederholen. Alternativ lassen sich Kopf- und Positionsdaten auf getrennten Tabellenblättern über eine eindeutige Belegreferenz verbinden. Wichtig ist, dass später erkennbar bleibt, welche Zeilen zu welcher Rechnung gehören.</p></section>
+<section><h2>Sinnvolle Excel-Spalten für die Prüfung</h2>
+<p>Die benötigten Spalten richten sich nach dem internen Ablauf. Für eine nachvollziehbare Erfassung sind folgende Felder praktisch:</p>
+<table><thead><tr><th>Spalte</th><th>Zweck</th></tr></thead><tbody>
+<tr><td>Dateiname und Rechnungsnummer</td><td>Verknüpfen jede Position mit dem Originalbeleg.</td></tr>
+<tr><td>Positionsnummer</td><td>Erleichtert den direkten Vergleich mit der Rechnung.</td></tr>
+<tr><td>Beschreibung</td><td>Bewahrt Waren- oder Leistungstext möglichst vollständig.</td></tr>
+<tr><td>Menge und Einheit</td><td>Trennt den Zahlenwert von Stück, Stunden, Metern oder anderen Einheiten.</td></tr>
+<tr><td>Einzelpreis und Positionsbetrag</td><td>Ermöglichen einen rechnerischen Vergleich.</td></tr>
+<tr><td>Rabatt oder Zuschlag</td><td>Macht Preisänderungen sichtbar, statt sie als unerklärte Differenz zu belassen.</td></tr>
+<tr><td>Steuersatz und Prüfstatus</td><td>Kennzeichnen erkannte Angaben und offene Kontrollen.</td></tr>
+</tbody></table>
+<p>Kostenstelle, Projekt, Bestellnummer oder Kontierung können ergänzt werden, wenn sie für den Prozess nötig sind. Solche Informationen stammen jedoch nicht immer aus der PDF. Automatisch erkannte und manuell ergänzte Werte sollten deshalb unterscheidbar bleiben. Ein leeres Feld bedeutet außerdem nicht automatisch null, sondern kann auf eine fehlende oder unsichere Erkennung hinweisen.</p></section>
+<section><h2>Menge, Einheit, Einzelpreis und Gesamtpreis kontrollieren</h2>
+<p>Eine häufige Fehlerquelle ist die falsche Zuordnung von Zahlen innerhalb einer Tabellenzeile. Ein Betrag kann der Einzelpreis, der Nettobetrag der Position oder ein bereits rabattierter Endwert sein. Ebenso darf eine Angabe wie 12 Stunden nicht als unstrukturierter Text stehen bleiben, wenn später nach Menge und Einheit ausgewertet werden soll.</p>
+<p>Als technische Kontrolle lässt sich Menge mal Einzelpreis mit dem ausgewiesenen Positionsbetrag vergleichen. Dieser Vergleich ist aber nur ein Hinweis. Pauschalen, Staffelpreise, Rundungen oder abweichende Preislogiken können zu einer erklärbaren Differenz führen. Sinnvoll sind daher getrennte Spalten für den erkannten Betrag, einen berechneten Vergleichswert und einen Status wie geprüft, Abweichung oder manuell klären. Das Originalfeld sollte nicht stillschweigend durch einen berechneten Wert ersetzt werden.</p></section>
+<section><h2>Mehrzeilige Beschreibungen und Seitenumbrüche erkennen</h2>
+<p>In Handwerks- und Technikrechnungen laufen Leistungsbeschreibungen oft über mehrere Zeilen. Artikelnummern, Maße, Seriennummern oder Montagehinweise können unterhalb der ersten Positionszeile stehen. Eine einfache Textextraktion deutet solche Fortsetzungen manchmal als neue Position. Umgekehrt können zwei benachbarte Positionen fälschlich zusammengezogen werden.</p>
+<p>Auch Seitenumbrüche erfordern Kontrolle. Tabellenüberschriften werden auf der nächsten Seite häufig wiederholt, während eine Position dort fortgesetzt wird. Wiederholte Spaltennamen dürfen nicht als Rechnungszeile in Excel erscheinen. Die vollständige Rohbeschreibung sollte erhalten bleiben; Kürzungen oder Kategorien gehören in separate Spalten, damit der ausgelesene Wortlaut weiterhin mit der PDF verglichen werden kann.</p></section>
+<section><h2>Rabatte, Zuschläge und Summen richtig einordnen</h2>
+<p>Rabatte und Zuschläge können direkt zu einer Position gehören, als eigene Tabellenzeile erscheinen oder erst im Summenblock stehen. Ein Positionsrabatt ist nicht dasselbe wie ein Nachlass auf die gesamte Rechnung. Fracht, Verpackung, Montagepauschalen oder sonstige Nebenkosten sollten ebenfalls als eigener Typ erkennbar sein, statt unbemerkt als normale Materialposition behandelt zu werden.</p>
+<p>Für den Summenabgleich werden die Positionswerte einschließlich separat ausgewiesener Zu- und Abschläge mit den Nettosummen der Rechnung verglichen. Danach folgen Umsatzsteuer und Bruttobetrag. Enthält die Rechnung unterschiedliche Steuersätze, müssen die zugehörigen Bemessungsgrundlagen getrennt betrachtet werden. Ein passender Gesamtbetrag allein beweist noch nicht, dass jede Position korrekt erkannt und zugeordnet wurde.</p></section>
+<section><h2>Grenzen bei Scan-PDFs</h2>
+<p>Textbasierte PDF-Dateien enthalten Zeichen, die ein lokales Werkzeug direkt verarbeiten kann. Ein Scan besteht dagegen aus Bilddaten und benötigt OCR. Dabei können Ziffern, Dezimaltrennzeichen, Einheiten und Tabellenlinien falsch erkannt werden. Schlechter Kontrast, schiefe Seiten oder kleine Schrift erhöhen das Risiko zusätzlicher Fehler.</p>
+<p>Bei gescannten Rechnungen sollte der Prüfstatus auf die OCR-Erkennung hinweisen. Mengen, Preise, Summen und auffällige Beschreibungen werden direkt neben dem Original kontrolliert. Unleserliche Werte gehören in eine Klärungsliste und dürfen nicht durch plausibel wirkende Annahmen ersetzt werden.</p></section>
+<section><h2>Kontrollierter Arbeitsablauf</h2>
+<ol>
+<li>Original-PDF unverändert aufbewahren und jeder Excel-Zeile eine Belegreferenz geben.</li>
+<li>Kopfdaten einmal je Rechnung erfassen und Positionsdaten strukturiert zuordnen.</li>
+<li>Menge, Einheit, Einzelpreis, Positionsbetrag sowie Rabatte und Zuschläge vergleichen.</li>
+<li>Mehrzeilige Texte, Seitenumbrüche und wiederholte Tabellenköpfe kontrollieren.</li>
+<li>Positionssummen mit Netto, Umsatzsteuer und Brutto der Rechnung abgleichen.</li>
+<li>OCR-Funde, Abweichungen und manuelle Änderungen mit einem sichtbaren Status dokumentieren.</li>
+</ol>
+<p>Für Buchhaltung und Kanzlei ist zusätzlich eine klare Zuständigkeit wichtig: Wer prüft erkannte Werte, wer klärt Abweichungen, und ab welchem Status darf die Datei weitergegeben werden? Handwerks- und Technikbetriebe profitieren davon, Projekt- oder Bestellbezüge separat zu erfassen, ohne sie mit dem ausgelesenen Originaltext zu vermengen. So bleibt der Export sowohl für die operative Kontrolle als auch für spätere Rückfragen nachvollziehbar.</p>
+<p>Ein optionales 29-EUR-Paket mit Vorlagen kann wiederkehrende Prüfschritte organisatorisch ergänzen. Es ersetzt weder die Kontrolle am Originalbeleg noch die fachliche Freigabe durch die zuständige Person. Dieser Beitrag beschreibt technische und organisatorische Abläufe und ist keine Rechts- oder Steuerberatung.</p>
+<p><a href="../tool/">Rechnungspositionen aus PDF lokal auslesen und prüfen</a></p></section>
+</article><footer>Automatische Extraktion unterstützt die Vorbereitung. Erkannte Werte sind vor Buchung, Zahlung oder Übergabe am Originalbeleg zu kontrollieren.</footer>
+</main></body></html>
