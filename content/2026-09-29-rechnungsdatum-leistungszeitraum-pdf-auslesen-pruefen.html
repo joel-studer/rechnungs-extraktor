@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rechnungsdatum und Leistungszeitraum aus PDF auslesen</title>
+<meta name="description" content="Rechnungsdatum und Leistungszeitraum aus PDF-Rechnungen lokal auslesen, Datumsformate vereinheitlichen und vor der Weitergabe nachvollziehbar prüfen.">
+<style>
+body{margin:0;color:#17202a;font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:820px;margin:auto;padding:38px 20px 60px}h1{font-size:36px;line-height:1.15}h2{margin-top:32px;font-size:23px}p,li{max-width:75ch}.lead{color:#34404b;font-size:18px}table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #dfe4e8;text-align:left;vertical-align:top}footer{margin-top:40px;padding-top:18px;border-top:1px solid #dfe4e8;color:#5c6670;font-size:14px}a{color:#185abc}
+</style>
+</head>
+<body><main><article>
+<header><h1>Rechnungsdatum und Leistungszeitraum aus PDF auslesen und prüfen</h1>
+<p class="lead">Das Datum auf einer Rechnung ist nicht immer die einzige zeitliche Information. Für Buchhaltung, Steuerberater-Kanzleien sowie Handwerks- und Technikbetriebe ist außerdem wichtig, wann eine Leistung erbracht wurde. Ein lokaler PDF-Extraktor kann beide Angaben strukturiert erfassen. Die fachliche Kontrolle am Originalbeleg bleibt dabei ein eigener Arbeitsschritt.</p></header>
+
+<section><h2>Warum mehrere Datumsangaben getrennt erfasst werden</h2>
+<p>Auf einem Beleg können Ausstellungsdatum, Lieferdatum, Ausführungsdatum, Abnahme, Servicezeitraum oder ein Monatsbereich stehen. Diese Angaben haben unterschiedliche Bedeutungen. Das Ausstellungsdatum beschreibt, wann das Dokument erstellt wurde. Ein Leistungszeitraum bezieht sich dagegen auf die ausgeführte Arbeit oder den abgerechneten Abschnitt.</p>
+<p>Wer alle Datumswerte in ein einziges Feld schreibt, verliert diese Unterscheidung. Für eine nachvollziehbare Tabelle sind deshalb mindestens ein Feld für das Rechnungsdatum, ein Feld für den Beginn und eines für das Ende des Leistungszeitraums sinnvoll. Zusätzlich sollte der erkannte Originaltext erhalten bleiben. So lässt sich später feststellen, ob ein Wert automatisch erkannt oder nachträglich ergänzt wurde.</p></section>
+
+<section><h2>Typische Schreibweisen in deutschen und österreichischen PDFs</h2>
+<p>Textbasierte PDF-Dateien enthalten Datumsangaben in unterschiedlichen Schreibweisen. Häufig sind etwa <code>31.08.2026</code>, <code>2026-08-31</code> oder ausgeschriebene Monatsnamen. Ein Zeitraum kann als <code>01.08.–31.08.</code>, <code>August 2026</code>, <code>KW 34</code> oder mit Formulierungen wie „Leistung vom ... bis ...“ erscheinen.</p>
+<p>Die Darstellung sollte beim Export vereinheitlicht werden, ohne den Fund im Dokument zu überschreiben. Praktisch sind getrennte Spalten für <strong>Originalwert</strong>, <strong>normalisiertes Datum</strong> und <strong>Erkennungsstatus</strong>. Bei einem Monatsnamen ist der Monat klar, ein konkreter Tag aber nicht zwingend. Das Ergebnis darf dann nicht stillschweigend als beliebiger Tag gespeichert werden.</p>
+<table><thead><tr><th>Erkannter Inhalt</th><th>Sinnvolle Ablage</th><th>Kontrollfrage</th></tr></thead><tbody>
+<tr><td>Ein einzelnes Datum</td><td>Datum plus Originalschreibweise</td><td>Ist die Bezeichnung eindeutig?</td></tr>
+<tr><td>Beginn und Ende</td><td>Zwei Datumsfelder und ein Zeitraumstext</td><td>Sind beide Grenzen lesbar?</td></tr>
+<tr><td>Monat oder Kalenderwoche</td><td>Zeitraumangabe ohne erfundenen Tag</td><td>Welche Genauigkeit nennt das Dokument?</td></tr>
+<tr><td>Mehrere Datumsarten</td><td>Je Datum ein beschriftetes Feld</td><td>Passt das Datum zur Bezeichnung?</td></tr>
+</tbody></table></section>
+
+<section><h2>Beschriftung statt Position im PDF verwenden</h2>
+<p>Ein Datum nahe dem Kopfbereich ist nicht automatisch das Rechnungsdatum. Tabellen, Fußzeilen und wiederholte Seitenköpfe können weitere Datumswerte enthalten. Deshalb sollte die Erkennung zuerst nach Signalwörtern und ihrer Nähe suchen: „Rechnungsdatum“, „Ausgestellt am“, „Leistungszeitraum“, „Ausführungsdatum“ oder „Abnahme am“ liefern mehr Kontext als die bloße Position auf der Seite.</p>
+<p>Für Kanzleien ist die Herkunft jedes Feldes besonders hilfreich. Neben dem Wert kann der Export die Seitenzahl oder einen kurzen Kontextausschnitt speichern, sofern das Werkzeug diese Information bereitstellt. Bei Handwerks- und Technikbetrieben lohnt sich ein zusätzlicher Bezug zu Auftrag, Baustelle oder Servicebericht. Solche Angaben sollten als eigene Notiz oder Referenz geführt werden und nicht mit dem erkannten Datum verschmelzen.</p></section>
+
+<section><h2>Zeiträume über Seitenumbrüche hinweg prüfen</h2>
+<p>Leistungsbeschreibungen und Zeiträume stehen nicht immer zusammen. Ein Dokument kann den Zeitraum auf der ersten Seite nennen und die Details auf einer späteren Seite fortsetzen. Auch eine wiederholte Kopfzeile kann ein Datum enthalten, das nur zum Dokument und nicht zur einzelnen Leistung gehört.</p>
+<p>Ein robuster Prüfschritt liest deshalb den vollständigen Text und kontrolliert anschließend die Fundstellen. Stimmen Beginn und Ende nicht mit dem Original überein, sollte der Datensatz den Status „manuell klären“ erhalten. Ein leeres Enddatum ist nicht dasselbe wie ein eintägiger Zeitraum. Ebenso darf eine erkannte Jahreszahl nicht mit einem angenommenen Monat ergänzt werden.</p></section>
+
+<section><h2>Regeln für die praktische Kontrolle</h2>
+<ol>
+<li>Original-PDF unverändert ablegen und den Dateinamen im Datensatz mitführen.</li>
+<li>Rechnungsdatum, Leistungsbeginn und Leistungsende in getrennten Feldern erfassen.</li>
+<li>Originalschreibweise und normalisierten Wert gemeinsam speichern.</li>
+<li>Bezeichnungen, Seitenkontext und erkannte Genauigkeit kontrollieren.</li>
+<li>Unvollständige oder widersprüchliche Zeiträume sichtbar markieren.</li>
+<li>Manuelle Änderungen mit Datum, Kürzel oder einem nachvollziehbaren Status dokumentieren.</li>
+</ol>
+<p>Ein Statusfeld wie „automatisch erkannt“, „geprüft“ oder „manuell klären“ hilft bei der Übergabe an die nächste Person. Es ersetzt keine fachliche Freigabe, macht offene Stellen aber sichtbar. Für wiederkehrende Formate können die verwendeten Suchbegriffe und Ausnahmen in einer internen Prüfanleitung festgehalten werden. So bleibt der Ablauf auch dann verständlich, wenn mehrere Personen oder Mandate bearbeitet werden.</p></section>
+
+<section><h2>Grenzen bei Scan-PDFs und unklaren Angaben</h2>
+<p>Ein lokales Werkzeug kann Text aus einer PDF direkt verarbeiten, sofern eine Textebene vorhanden ist. Reine Scan-Dateien bestehen dagegen aus Bildern. Ohne OCR werden Datumswerte dort nicht zuverlässig erkannt. Selbst bei einer Texterkennung können Punkte, Bindestriche, Monatsnamen oder Seitenzahlen verwechselt werden.</p>
+<p>Bei schwer lesbaren Belegen ist es besser, einen offenen Prüfstatus zu setzen, als einen scheinbar vollständigen Zeitraum zu erzeugen. Der Extraktor unterstützt die Vorbereitung der Datenerfassung; die Entscheidung, welcher Zeitraum fachlich maßgeblich ist, muss am Originalbeleg und im jeweiligen Arbeitsprozess getroffen werden.</p>
+<p><a href="../tool/">Rechnungsdatum und Leistungszeitraum lokal aus PDF auslesen</a></p></section>
+</article><footer>Dieser Beitrag beschreibt technische Erfassung und Kontrollschritte. Er ist keine Rechts- oder Steuerberatung.</footer>
+</main></body>
+</html>
