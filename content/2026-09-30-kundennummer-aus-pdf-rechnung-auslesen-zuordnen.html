@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kundennummer aus PDF-Rechnung auslesen und zuordnen</title>
+<meta name="description" content="Kundennummern aus PDF-Rechnungen erkennen, Schreibweisen sicher normalisieren, mit Lieferant und Rechnungsnummer abgleichen und nach Excel exportieren.">
+<style>
+body{margin:0;color:#17202a;font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:820px;margin:auto;padding:38px 20px 60px}h1{font-size:36px;line-height:1.15}h2{margin-top:32px;font-size:23px}p,li{max-width:75ch}.lead{color:#34404b;font-size:18px}table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #dfe4e8;text-align:left;vertical-align:top}footer{margin-top:40px;padding-top:18px;border-top:1px solid #dfe4e8;color:#5c6670;font-size:14px}a{color:#185abc}
+</style>
+</head>
+<body><main><article>
+<header><h1>Kundennummer aus PDF-Rechnung auslesen und dem richtigen Vorgang zuordnen</h1>
+<p class="lead">Eine Kundennummer auf der Eingangsrechnung kann helfen, das richtige Lieferantenkonto oder den passenden Vorgang zu finden. Sie steht aber nicht immer an derselben Stelle und ist nicht automatisch die eigene Kunden- oder Debitorennummer. Für Buchhaltung, Steuerberater-Kanzleien sowie Handwerks- und Technikbetriebe ist deshalb ein nachvollziehbarer Ablauf wichtig: Fundstelle erkennen, Wert vorsichtig vereinheitlichen, mit weiteren Merkmalen abgleichen und am Original-PDF prüfen.</p></header>
+
+<section><h2>Welche Nummer ist tatsächlich gemeint?</h2>
+<p>Auf einer Rechnung können mehrere Nummern vorkommen: Kundennummer, Debitorennummer, Kontonummer, Vertragsnummer, Auftragsnummer, Bestellnummer oder Rechnungsnummer. Die Rechnungsnummer identifiziert das Dokument. Die Kundennummer verweist dagegen meist auf das Konto, unter dem der Lieferant den Geschäftspartner führt. Eine Auftrags- oder Projektnummer kann zusätzlich den konkreten Vorgang kennzeichnen.</p>
+<p>Die Position allein reicht daher nicht aus. Ein Wert im Kopfbereich kann zur Rechnung, zum Lieferanten oder zum Empfänger gehören. Auch Bezeichnungen wie „Kunden-Nr.“, „Kd.-Nr.“, „Deb.-Nr.“ oder „Account“ können je nach Rechnungslayout unterschiedliche Bedeutungen haben. Die Auslese sollte neben dem Wert immer die erkannte Beschriftung und einen kurzen Textkontext speichern.</p></section>
+
+<section><h2>Fundstellen im PDF systematisch erkennen</h2>
+<p>Bei textbasierten PDFs beginnt die Suche mit Signalwörtern. Sinnvoll sind Varianten mit und ohne Punkt, Leerzeichen oder Bindestrich. Dazu gehören etwa „Kundennummer“, „Kunden-Nr“, „Kd.-Nr“, „Debitor“, „Deb.-Nr“ und „Konto“. Danach wird geprüft, welcher alphanumerische Wert in der Nähe steht. Eine starre Regel wie „immer der erste Zahlenblock“ führt leicht zu einer falschen Zuordnung.</p>
+<p>Der Kontext kann aus derselben Zeile, dem benachbarten Tabellenfeld oder einem begrenzten Ausschnitt des Textes bestehen. Bei mehrseitigen Rechnungen sollte auch geprüft werden, ob die Information in einer wiederholten Kopfzeile, einem Anschreiben oder einem separaten Kontaktdatenblock vorkommt. Die Fundstelle kann mit Seitenzahl und Originalausschnitt dokumentiert werden, sofern das Auslesewerkzeug diese Angaben bereitstellt.</p>
+<table><thead><tr><th>Fundstelle</th><th>Was zu prüfen ist</th><th>Möglicher Status</th></tr></thead><tbody>
+<tr><td>„Kundennummer“ direkt vor dem Wert</td><td>Ist der Wert vollständig und eindeutig lesbar?</td><td>automatisch erkannt</td></tr>
+<tr><td>Mehrere ähnliche Nummern im Kopf</td><td>Welche Beschriftung gehört genau zu welchem Wert?</td><td>manuell klären</td></tr>
+<tr><td>Wert nur in einer Tabelle oder Fußzeile</td><td>Bezieht er sich auf das Konto oder auf eine Position?</td><td>Kontext prüfen</td></tr>
+<tr><td>Scan ohne Textebene</td><td>Kann OCR die Zeichen zuverlässig unterscheiden?</td><td>Original-PDF prüfen</td></tr>
+</tbody></table></section>
+
+<section><h2>Schreibweisen normalisieren, Originalwert behalten</h2>
+<p>Lieferanten verwenden unterschiedliche Formate. Eine Kundennummer kann führende Nullen, Leerzeichen, Schrägstriche, Bindestriche oder Buchstaben enthalten. Für den Abgleich können vereinheitlichte Vergleichswerte hilfreich sein, etwa durch das Entfernen überflüssiger Zwischenräume oder die Vereinheitlichung eines klar erkennbaren Trennzeichens. Das darf jedoch nicht den Fund im Dokument ersetzen.</p>
+<p>Führe deshalb mindestens zwei getrennte Felder: <strong>Originalwert</strong> mit der exakten Schreibweise aus dem PDF und <strong>Vergleichswert</strong> für die interne Suche. Ergänzend sind Lieferant, Rechnungsnummer, Fundstelle und Normalisierungsregel sinnvoll. Führende Nullen sollten nur dann ignoriert werden, wenn die interne Zuordnung das ausdrücklich vorsieht. Bei Buchstaben-Zahlen-Kombinationen dürfen ähnlich aussehende Zeichen wie „O“ und „0“ nicht stillschweigend korrigiert werden.</p></section>
+
+<section><h2>Lieferant und Rechnungsnummer gemeinsam verwenden</h2>
+<p>Eine Kundennummer ist häufig nur innerhalb eines Lieferanten eindeutig. Für die Zuordnung zum Lieferantenkonto sollte sie deshalb mit dem erkannten Lieferantennamen oder einer vorhandenen Lieferanten-ID kombiniert werden. Die Rechnungsnummer dient als zusätzliches Merkmal für das konkrete Dokument. Ein geeigneter Datensatz kann daher Lieferant, Lieferantenkonto, Kundennummer im Original, normalisierte Kundennummer, Rechnungsnummer, Vorgang oder Auftrag sowie einen Prüfstatus enthalten.</p>
+<p>Bei Handwerks- und Technikbetrieben kann außerdem eine Baustellen-, Service- oder Bestellreferenz relevant sein. Sie sollte als eigenes Feld behandelt werden. Stimmen Lieferant und Rechnungsnummer, aber nicht die Kundennummer, liegt möglicherweise ein Lieferantenwechsel, ein neues Konto oder ein Übertragungsfehler vor. Das Ergebnis sollte dann nicht automatisch überschrieben, sondern als Abweichung sichtbar gespeichert werden.</p></section>
+
+<section><h2>Fehlende und mehrdeutige Werte sichtbar markieren</h2>
+<p>Nicht jede Rechnung enthält eine Kundennummer. Manche Lieferanten drucken nur eine Vertrags- oder Bestellnummer auf. Fehlt der erwartete Wert, sollte das Feld leer bleiben und einen Status wie „nicht gefunden“ erhalten. Ein erfundener Ersatzwert oder die Übernahme der Rechnungsnummer als Kundennummer macht spätere Prüfungen schwerer.</p>
+<p>Werden mehrere mögliche Werte gefunden, sollten alle Fundstellen oder zumindest der Konflikt dokumentiert werden. Geeignete Statuswerte sind beispielsweise „automatisch erkannt“, „geprüft“, „nicht gefunden“, „mehrdeutig“ und „manuell klären“. Der Status erklärt, wie verlässlich die Zuordnung ist, ohne eine fachliche Entscheidung vorwegzunehmen.</p></section>
+
+<section><h2>Am Original-PDF prüfen und nach Excel exportieren</h2>
+<p>Vor der Übergabe an ein Lieferantenkonto wird der normalisierte Wert am Original-PDF kontrolliert. Dabei gehören Beschriftung, vollständige Zeichenfolge, Seitenzahl und Kontext zusammen. Bei Scan-PDFs können OCR-Fehler auftreten; bei kleinen Schriften oder blassen Kopien sind einzelne Zeichen besonders anfällig. Änderungen am Ergebnis sollten mit einem Prüfhinweis oder Bearbeiterkürzel nachvollziehbar bleiben.</p>
+<p>Für Excel eignet sich eine flache Tabelle, in der jede Rechnung eine Zeile erhält. Spalten für Dateiname, Lieferant, Rechnungsnummer, Originalwert, Vergleichswert, Fundstelle, Lieferantenkonto, Vorgang und Prüfstatus halten die Herkunft transparent. Ein Export sollte leere, mehrdeutige und geprüfte Werte unterscheiden können. So lassen sich offene Fälle filtern, ohne die Originalangabe zu verlieren oder ungeprüfte Zuordnungen als sicher erscheinen zu lassen.</p>
+<p><a href="../tool/">Kundennummer aus PDF-Rechnung lokal auslesen und für den Abgleich vorbereiten</a></p></section>
+</article><footer>Dieser Beitrag beschreibt technische Erfassung und Kontrollschritte. Er ist keine Rechts- oder Steuerberatung. Ein verfügbares 29-EUR-Paket kann die technische Verarbeitung unterstützen; die fachliche Zuordnung bleibt im jeweiligen Arbeitsprozess zu prüfen.</footer>
+</main></body>
+</html>
