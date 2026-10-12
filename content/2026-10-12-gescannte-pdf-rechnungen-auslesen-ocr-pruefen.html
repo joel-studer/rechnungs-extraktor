@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gescannte PDF-Rechnungen auslesen: OCR erkennen und prüfen</title>
+<meta name="description" content="Gescannte PDF-Rechnungen sicher auslesen: Text-PDF und Bildscan unterscheiden, OCR gezielt einsetzen und erkannte Rechnungsdaten am Original prüfen.">
+<style>body{margin:0;color:#17202a;font:16px/1.6 system-ui,sans-serif}main{max-width:820px;margin:auto;padding:38px 20px 60px}h1{font-size:36px;line-height:1.15}h2{margin-top:30px}p,li{max-width:75ch}.lead{font-size:18px;color:#34404b}.note{background:#f5f7f9;border-left:3px solid #185abc;padding:12px 15px}footer{margin-top:40px;border-top:1px solid #ddd;padding-top:16px;color:#5c6670;font-size:14px}a{color:#185abc}</style>
+    </head>
+    <body>
+    <main>
+    <article>
+    <h1>Gescannte PDF-Rechnungen auslesen: OCR erkennen und Ergebnisse prüfen</h1>
+    <p class="lead">Eine PDF-Rechnung kann auf dem Bildschirm vollständig lesbar aussehen und trotzdem keinen auswertbaren Text enthalten. Das passiert häufig bei eingescannten Papierbelegen oder Bilddateien, die lediglich in einen PDF-Container gelegt wurden. Für Buchhaltung, Kanzlei und Betrieb ist deshalb der erste Schritt nicht die Felderkennung, sondern die Frage: Enthält die Datei bereits Text oder braucht sie vorher eine OCR-Texterkennung?</p>
+    <h2>Text-PDF und Bildscan unterscheiden</h2>
+    <p>Bei einer normalen Text-PDF sind Buchstaben, Zahlen und Wörter als Zeichen im Dokument gespeichert. Ein Extraktionswerkzeug kann diesen Inhalt direkt lesen und anschließend nach Rechnungsnummer, Datum, Lieferant oder Beträgen suchen. Ein reiner Bildscan besteht dagegen nur aus Pixeln. Menschen erkennen darauf eine Rechnung, für ein textbasiertes Werkzeug gibt es jedoch zunächst keine Wörter und keine Zahlen.</p>
+    <p>Auch Mischformen kommen vor. Manche Dokumente enthalten eine sichtbare Scan-Seite und zusätzlich eine unsichtbare Textebene. Andere haben nur auf einzelnen Seiten Text. Wieder andere wurden bereits per OCR verarbeitet, enthalten aber viele falsch erkannte Zeichen. Die Dateiendung <code>.pdf</code> sagt daher nichts darüber aus, ob eine zuverlässige Textebene vorhanden ist.</p>
+    <h2>Der einfache Kopiertest vor der Verarbeitung</h2>
+    <p>Ein schneller Praxistest funktioniert mit einem PDF-Reader: Versuche, eine eindeutige Passage wie Rechnungsnummer oder Lieferantenname zu markieren und in einen Texteditor zu kopieren. Erscheint dort derselbe lesbare Text, ist grundsätzlich eine Textebene vorhanden. Lässt sich nur ein rechteckiger Bildbereich auswählen oder bleibt die Zwischenablage leer, handelt es sich wahrscheinlich um einen reinen Scan.</p>
+    <p>Der Test beweist noch nicht, dass die Textebene vollständig oder korrekt ist. Kopiere deshalb zusätzlich eine Zeile mit Sonderzeichen, Datum und Betrag. Werden Ziffern vertauscht, Leerzeichen mitten in Wörtern eingefügt oder Dezimaltrennzeichen ausgelassen, sollte die Datei wie ein OCR-Fall behandelt werden. Besonders Rechnungsnummern, IBANs und Summen reagieren empfindlich auf einzelne falsch erkannte Zeichen.</p>
+    <h2>OCR ist ein vorgelagerter Arbeitsschritt</h2>
+    <p>OCR bedeutet optische Zeichenerkennung. Sie analysiert das Bild einer Seite und erzeugt daraus eine maschinenlesbare Textebene. Erst danach kann ein textbasierter Rechnungs-Extraktor nach Feldbezeichnungen und Werten suchen. Die OCR ersetzt also nicht die eigentliche Rechnungsdatenerkennung, sondern schafft deren technische Grundlage.</p>
+    <p>Für einen kontrollierten Ablauf bleibt der ursprüngliche Scan erhalten. Die OCR-Version wird als neue Arbeitsdatei erzeugt und eindeutig mit dem Original verknüpft. So lässt sich bei einer Unstimmigkeit nachvollziehen, ob der Fehler schon bei der Texterkennung entstanden ist oder erst bei der Zuordnung eines Feldes. Ein überschriebenes Original erschwert diese Prüfung unnötig.</p>
+    <ul>
+    <li>Scanqualität prüfen: gedrehte, abgeschnittene oder unscharfe Seiten zuerst korrigieren.</li>
+    <li>Passende Dokumentsprache für die OCR wählen, falls das verwendete Programm diese Einstellung anbietet.</li>
+    <li>Originalscan und OCR-Datei anhand eines eindeutigen Dateinamens zusammenhalten.</li>
+    <li>Erst die Textebene stichprobenartig prüfen, danach Rechnungsfelder extrahieren.</li>
+    </ul>
+    <h2>Welche Fehler nach der Texterkennung typisch sind</h2>
+    <p>OCR-Ergebnisse können plausibel aussehen und trotzdem falsch sein. Häufig werden ähnlich geformte Zeichen verwechselt, etwa Buchstabe O und Ziffer 0 oder Buchstabe I und Ziffer 1. Bei kleinen Schriften können Komma und Punkt verschwinden. Tabellenlinien, Stempel, Wasserzeichen oder ein unruhiger Hintergrund erschweren die Erkennung zusätzlich.</p>
+    <p>Darum sollten kritische Werte nicht isoliert betrachtet werden. Rechnungsnummer und Lieferant gehören zusammen, ebenso Netto, Umsatzsteuer und Brutto. Ein erkannter Betrag kann rechnerisch geprüft werden, doch auch eine passende Rechnung ersetzt nicht den Blick auf den Beleg. Bei mehreren Steuersätzen oder Gutschriften ist eine rein technische Plausibilitätsprüfung besonders begrenzt.</p>
+    <h2>Prüfablauf für Buchhaltung, Kanzlei und Betrieb</h2>
+    <p>Ein sinnvoller Ablauf trennt technische Erfassung und fachliche Freigabe. Zuerst wird festgestellt, welche Dateien Text enthalten und welche OCR benötigen. Danach werden die gewünschten Felder ausgelesen. Unsichere oder leere Werte bleiben sichtbar und werden nicht durch geschätzte Angaben ergänzt.</p>
+    <p>In einer Steuerberater-Kanzlei kann der Prüfstatus je Mandant und Belegdatei geführt werden. Handwerks- und Technikbetriebe können zusätzlich Auftrag, Projekt oder Kostenstelle ergänzen, nachdem der Beleg eindeutig zugeordnet wurde. In der internen Buchhaltung sollte jede Tabellenzeile zum Original oder zur OCR-Arbeitsdatei zurückführen. So bleibt die Kontrolle auch bei einem größeren Rechnungsordner nachvollziehbar.</p>
+    <p>Vor einer Übergabe werden mindestens Lieferant, Rechnungsnummer, Rechnungsdatum und Summen direkt mit der sichtbaren Rechnung verglichen. Bankdaten und Zahlungsangaben verdienen eine gesonderte Prüfung. Ob ein Beleg fachlich richtig ist, gebucht oder bezahlt werden darf, entscheidet nicht die OCR und nicht der Extraktor.</p>
+    <h2>Datenschutz und lokale Verarbeitung</h2>
+    <p>Rechnungen enthalten Geschäfts-, Kontakt- und Zahlungsdaten. Vor dem Einsatz eines OCR-Dienstes sollte deshalb geklärt werden, ob Dateien lokal verarbeitet oder an einen externen Server übertragen werden. Bei lokaler OCR und lokaler Extraktion bleiben die Arbeitsdateien auf dem eigenen Gerät. Welche organisatorischen und rechtlichen Anforderungen im konkreten Betrieb gelten, muss unabhängig vom technischen Werkzeug geklärt werden.</p>
+    <div class="note"><strong>Wichtig:</strong> Der hier angebotene Rechnungs-Extraktor führt selbst keine OCR durch. Er eignet sich für PDFs mit vorhandener, lesbarer Textebene. Reine Bildscans müssen vorher mit einem passenden OCR-Werkzeug verarbeitet und anschließend am Original geprüft werden.</div>
+    <p><a href="../tool/">PDF mit Textebene lokal auslesen und die erkannten Rechnungsdaten prüfen</a></p>
+    </article>
+    <footer>Dieser Beitrag beschreibt technische Erfassungs- und Kontrollabläufe und ist keine Rechts- oder Steuerberatung.</footer>
+    </main>
+    </body>
+    </html>
+    
