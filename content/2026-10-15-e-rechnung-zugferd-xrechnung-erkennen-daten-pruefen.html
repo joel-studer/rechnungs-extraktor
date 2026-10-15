@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>E-Rechnung im PDF: ZUGFeRD und XRechnung erkennen</title>
+<meta name="description" content="ZUGFeRD-PDF und XRechnung unterscheiden, eingebettete XML-Daten einordnen und Rechnungsangaben vor der Weiterverarbeitung in Buchhaltung oder Kanzlei prüfen.">
+<style>body{margin:0;color:#17202a;font:16px/1.6 system-ui,sans-serif}main{max-width:820px;margin:auto;padding:38px 20px 60px}h1{font-size:36px;line-height:1.15}h2{margin-top:30px}p,li{max-width:75ch}.lead{font-size:18px;color:#34404b}.note{background:#f5f7f9;border-left:3px solid #185abc;padding:12px 15px}footer{margin-top:40px;border-top:1px solid #ddd;padding-top:16px;color:#5c6670;font-size:14px}a{color:#185abc}</style>
+</head>
+<body>
+<main>
+<article>
+<h1>E-Rechnung im PDF: ZUGFeRD und XRechnung erkennen und Daten prüfen</h1>
+<p class="lead">Immer mehr Lieferanten versenden Rechnungen nicht mehr als reines Text-PDF, sondern in einem strukturierten elektronischen Format. Für die Buchhaltung ändert das die Ausgangslage: Neben dem sichtbaren Beleg existiert eine maschinenlesbare Datenschicht, die nicht zwingend identisch mit der gerenderten Seite ist. Wer Rechnungsdaten in eine Tabelle oder in die Kanzleisoftware übernehmen will, sollte beide Ebenen auseinanderhalten können.</p>
+<h2>Zwei Formate, zwei Datenquellen</h2>
+<p>Im deutschsprachigen Raum begegnen vor allem zwei Varianten. Die eine ist ein hybrides PDF: Das Dokument sieht wie eine gewöhnliche Rechnung aus, enthält aber zusätzlich eine eingebettete XML-Datei. Dieses Format ist als ZUGFeRD beziehungsweise Factur-X bekannt und folgt dem europäischen Standard EN 16931. Die andere Variante ist eine reine XML-Datei ohne sichtbare Seite, die als XRechnung bezeichnet wird. Beide tragen dieselben inhaltlichen Kerndaten, nur die Verpackung unterscheidet sich.</p>
+<p>Für die tägliche Arbeit bedeutet das: Ein hybrides PDF lässt sich zusätzlich zur XML-Datei wie ein normaler Beleg lesen, eine reine XML-Datei nicht. Wer eine XML-Datei per E-Mail erhält und sie wie ein PDF behandeln will, bekommt kein verwertbares Ergebnis. Umgekehrt enthält ein hybrides PDF zwei Wahrheiten – die gerenderte Darstellung und die strukturierten Felder im Anhang.</p>
+<h2>Woran man ein hybrides E-Rechnungs-PDF erkennt</h2>
+<p>Der zuverlässigste Hinweis ist der PDF-Anhang. In den Dokumenteigenschaften eines gängigen PDF-Betrachters erscheint eine eingebettete Datei, häufig mit Namen wie ZUGFeRD-invoice.xml, factur-x.xml oder einem ähnlichen Bezeichner. Fehlt ein solcher Anhang, handelt es sich um ein klassisches PDF ohne strukturierte Datenschicht.</p>
+<p>Ein zweiter Anhaltspunkt ist die Angabe des PDF/A-Formats in den Dokumenteigenschaften, weil hybride Rechnungen auf PDF/A-3 aufbauen. Zusätzlich nennen viele Rechnungen in einer Randspalte selbst das Format und die Version, etwa einen Hinweis auf ZUGFeRD oder Factur-X mit einer Profilangabe wie Minimum, Basic oder Comfort. Solche Textstellen sind nützliche Indizien, aber kein Beweis. Die Existenz des Anhangs bleibt das harte Kriterium.</p>
+<h2>Warum sichtbare Seite und XML-Daten abweichen können</h2>
+<p>Die gerenderte Seite ist eine Darstellung, die XML-Datei ist die eigentliche Datenstruktur. In der Praxis fällt das an mehreren Stellen auf. Beträge können auf der Seite anders formatiert sein als im Feld. Steuersätze können für verschiedene Positionen getrennt geführt werden, während die Seite nur eine Sammelzeile zeigt. Referenzen wie Bestellnummer, Kundennummer oder Leistungszeitraum können in der Darstellung fehlen und nur im strukturierten Teil vorhanden sein – oder umgekehrt.</p>
+<p>Deshalb ist es riskant, die Werte der sichtbaren Seite und die Werte der Datenschicht ungeprüft zu einem Datensatz zu verschmelzen. Wer nur die Seite ausliest, kann Felder verlieren, die für die Buchung gebraucht werden. Wer nur die XML-Datei verwendet, kann den Beleg nicht mit dem Auge kontrollieren, weil die visuelle Entsprechung fehlt.</p>
+<div class="note"><strong>Praktischer Prüfpunkt:</strong> Notiere bei jeder übernommenen Zeile, aus welcher Quelle der Wert stammt – sichtbare Seite oder eingebettete Datenschicht. Bei Abweichungen entscheidet nicht die Automatik, sondern die fachliche Prüfung am Original.</div>
+<h2>Was eine technische Auswertung leisten kann</h2>
+<p>Ein Extraktionswerkzeug liest den Text der sichtbaren Seite und erkennt darin typische Felder: Lieferant, Rechnungsnummer, Datum, Netto, Umsatzsteuer, Bruttobetrag, IBAN, Zahlungsziel oder Referenzen. Bei einem hybriden PDF funktioniert das genauso wie bei einem herkömmlichen Text-PDF, weil die Seite normalerweise eine echte Textebene besitzt. Bei eingescannten Bild-PDFs ist vorher eine OCR-Texterkennung nötig.</p>
+<p>Die XML-Datenschicht ist ein anderer Weg. Sie ist strukturiert und damit grundsätzlich gut maschinell verarbeitbar, erfordert aber eine passende Verarbeitung des jeweiligen Formats und der jeweiligen Version. Ein Werkzeug, das PDF-Seiten ausliest, ist kein XML-Importeur. Diese Grenze sollte man kennen, bevor man sich auf ein Ergebnis verlässt.</p>
+<h2>Ein Prüfablauf für Kanzlei und Betrieb</h2>
+<p>Zuerst wird die Belegart festgestellt: klassisches PDF, hybrides PDF mit Anhang oder reine XML-Datei. Danach werden die erkannten Angaben der sichtbaren Seite in die gewohnte Tabellenstruktur übernommen. Anschließend wird bei hybriden Belegen stichprobenartig oder systematisch geprüft, ob die strukturierte Datenschicht zusätzliche oder abweichende Werte enthält. Erst dann erfolgt die Weitergabe an die Buchhaltung oder die Kanzleisoftware.</p>
+<ul>
+<li>Anhang vorhanden und benannt?</li>
+<li>Belegart und Formatversion im Dokument genannt?</li>
+<li>Rechnungsnummer, Datum und Beträge auf Seite und in der Datenschicht deckungsgleich?</li>
+<li>Steuersätze je Position statt nur als Sammelzeile erfasst?</li>
+<li>Referenzen wie Bestellnummer, Kundennummer oder Leistungszeitraum vollständig?</li>
+<li>Quelle jedes Feldwertes dokumentiert und Abweichungen als Prüffall markiert?</li>
+</ul>
+<p>Für Kanzleien mit vielen Mandanten lohnt sich zusätzlich eine Spalte, die festhält, ob der Beleg visuell geprüft wurde. Für Handwerks- und Technikbetriebe ist die Zuordnung zum Auftrag oder zur Baustelle oft wichtiger als das Format selbst. In beiden Fällen gilt: Eine technisch erkannte Zahl ist keine fachliche Freigabe.</p>
+<h2>Wenn die XML-Datei zusätzlich gebraucht wird</h2>
+<p>Manche Buchhaltungen und Kanzleisoftware verarbeiten den strukturierten Teil bevorzugt. Fehlt dieser, weil der Lieferant nur ein PDF ohne Anhang oder einen Papierbeleg geschickt hat, ist die passende Antwort nicht das Nachbauen einer XML-Datei, sondern die Nachforderung beim Lieferanten. Ein nachträglich erzeugtes strukturiertes Dokument wäre eine neue Datei mit ungeklärtem Ursprung und kein Originalbeleg.</p>
+<p>Welche Formate in welchem Zeitraum verpflichtend oder zulässig sind und welche Aufbewahrungsregeln gelten, ist je nach Land und Unternehmensgröße unterschiedlich geregelt und ändert sich. Verbindliche Auskunft dazu gibt die zuständige Steuerberatung oder Finanzverwaltung. Dieser Beitrag beschreibt ausschließlich technische Erkennungs- und Prüfschritte.</p>
+<h2>Fazit</h2>
+<p>Die Unterscheidung zwischen sichtbarer Seite und strukturierter Datenschicht ist der entscheidende Schritt bei elektronischen Rechnungen. Wer weiß, ob ein PDF einen Anhang trägt und ob die Werte beider Ebenen übereinstimmen, kann Belege kontrolliert weitergeben und vermeidet stille Abweichungen in der Tabelle.</p>
+<p><a href="../tool/">Rechnungs-PDF lokal auslesen und erkannte Angaben am Original prüfen</a></p>
+</article>
+<footer>Dieser Beitrag beschreibt technische Erfassungs- und Kontrollabläufe und ist keine Rechts- oder Steuerberatung.</footer>
+</main>
+</body>
+</html>
